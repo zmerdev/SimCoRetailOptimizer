@@ -104,10 +104,11 @@ class Retail extends React.Component {
 
     setPlot = () => {
         functionPlot({
-            title: 'TimeToSell',
+            title: 'Profit Per Hour vs Price',
             target: '#plot',
-            yAxis: { domain: [this.state.domainY1, this.state.domainY2] },
-            xAxis: { domain: [this.state.domainX1, this.state.domainX2] },
+            yAxis: { domain: [this.state.domainY1, this.state.domainY2], label: "pph" },
+            xAxis: { domain: [this.state.domainX1, this.state.domainX2], label: "price" },
+            
             data: [{
                 fn: `(x-${this.state.materialCost})*((3600/((x * ${this.state.aa} + (-${this.state.bb} + (${this.state.saturation} - 0.5) / ${this.state.cc}))^2 * ${this.state.dd} + ${this.state.ee}))/(1-(${this.state.salesBonus}/100) ))-(${this.state.laborCost}*(1+${this.state.admin}))`,
                 nSamples: 700
