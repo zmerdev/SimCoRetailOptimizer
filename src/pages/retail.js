@@ -39,6 +39,15 @@ class Retail extends React.Component {
                 ['Sausage', '(Math.pow(price*0.374238 + (-3.753411 + (saturation - 0.5)/4.682714), 2.000000)*34.731853 + 21.572190)*amount'],
                 ['Steak', '(Math.pow(price*5.725281 + (-212.765637 + (saturation - 0.5)/0.097644), 2.000000)*0.050282 + 64.421295)*amount'],
             ]),
+            saturations: new Map([
+                ['Apples', '1.1479488416309305'],
+                ['Coffee', '2.646444620509639'],
+                ['Eggs', '0.6994512715043056'],
+                ['Grapes', '1.292423176971161'],
+                ['Oranges', '1.1474116641364727'],
+                ['Sausage', '1.1519938356952417'],
+                ['Steak', '1.9498757510468459'],
+            ]),
             retailmodel: "",
             max: 0,
             maxI: 0
@@ -117,7 +126,9 @@ class Retail extends React.Component {
     }
 
     handleResourceChange = (event) => {
-        this.setState({ retailmodel: this.state.retailmodels.get(event.target.value) }, this.parseRetailModel)
+        this.setState({ 
+            retailmodel: this.state.retailmodels.get(event.target.value)
+            , saturation: this.state.saturations.get(event.target.value) }, this.parseRetailModel)
     }
 
 
