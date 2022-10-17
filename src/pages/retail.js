@@ -5,13 +5,10 @@ import ReactSlider from 'react-slider';
 import nerdamer from "nerdamer/all.js";
 import NumericInput from 'react-numeric-input';
 import Form from 'react-bootstrap/Form'
-
-const modelMap = new Map()
-
+import saturationData from '../data/saturation.json';
+import Button from 'react-bootstrap/Button';
 
 class Retail extends React.Component {
-
-
     constructor(props) {
         super(props);
         this.state = {
@@ -52,6 +49,13 @@ class Retail extends React.Component {
             max: 0,
             maxI: 0
         };
+    }
+
+    loadData = () => {
+        let satData = JSON.parse(JSON.stringify(saturationData));
+        satData = new Map(satData)
+        console.log(satData)
+        this.setState({ saturations: satData }, () => { console.log(this.state) })
     }
 
     parseRetailModel = () => {
@@ -117,7 +121,7 @@ class Retail extends React.Component {
             target: '#plot',
             yAxis: { domain: [this.state.domainY1, this.state.domainY2], label: "pph" },
             xAxis: { domain: [this.state.domainX1, this.state.domainX2], label: "price" },
-            
+
             data: [{
                 fn: `(x-${this.state.materialCost})*((3600/((x * ${this.state.aa} + (-${this.state.bb} + (${this.state.saturation} - 0.5) / ${this.state.cc}))^2 * ${this.state.dd} + ${this.state.ee}))/(1-(${this.state.salesBonus}/100) ))-(${this.state.laborCost}*(1+${this.state.admin}))`,
                 nSamples: 700
@@ -125,12 +129,32 @@ class Retail extends React.Component {
         })
     }
 
-    handleResourceChange = (event) => {
-        this.setState({ 
-            retailmodel: this.state.retailmodels.get(event.target.value)
-            , saturation: this.state.saturations.get(event.target.value) }, this.parseRetailModel)
+    getSaturation = () => {
+
+        let url = `https://www.simcompanies.com/api/v3/1/buildings/2/`;
+        let options = {
+            method: 'GET',
+            mode: 'no-cors'
+        }
+        try {
+            fetch(url, options)
+                .then((response) => {
+                    console.log(response)
+                    response.json()
+                })
+                .then((data) => console.log(data));
+        }
+        catch (ex) {
+            console.log(ex)
+        }
     }
 
+    handleResourceChange = (event) => {
+        this.setState({
+            retailmodel: this.state.retailmodels.get(event.target.value)
+            , saturation: this.state.saturations.get(event.target.value)
+        }, this.parseRetailModel)
+    }
 
     componentDidMount() {
         this.solve()
@@ -140,16 +164,6 @@ class Retail extends React.Component {
         return (
             <div>
                 <div id='plot'></div>
-                <ReactSlider
-                    min={0}
-                    max={40}
-                    step={0.01}
-                    value={this.state.materialCost}
-                    className="horizontal-slider"
-                    thumbClassName="example-thumb"
-                    trackClassName="example-track"
-
-                />
                 <div>
                     <Form.Select onChange={this.handleResourceChange}>
                         <option>Select Resource</option>
@@ -169,6 +183,8 @@ class Retail extends React.Component {
                 <div>Admin <NumericInput step={0.01} precision={3} value={this.state.admin} onChange={(event) => this.setState({ admin: event }, this.solve())} /></div>
                 <div>Labor <NumericInput step={1} value={this.state.laborCost} onChange={(event) => this.setState({ laborCost: event }, this.solve())} /></div>
                 <div>Best Sale Price: {this.state.maxI} PPHPL: {this.state.max}</div>
+                <Button onClick={this.loadData}>Reload Saturation Data</Button>
+                <Button onClick={this.getSaturation}>Load Saturations from API</Button>
             </div>
         )
     }
