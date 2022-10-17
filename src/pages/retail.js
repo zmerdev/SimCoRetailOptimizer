@@ -5,7 +5,6 @@ import nerdamer from "nerdamer/all.js";
 import NumericInput from 'react-numeric-input';
 import Form from 'react-bootstrap/Form'
 import saturationData from '../data/saturation.json';
-import Button from 'react-bootstrap/Button';
 
 class Retail extends React.Component {
     constructor(props) {
