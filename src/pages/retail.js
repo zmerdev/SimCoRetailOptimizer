@@ -137,6 +137,7 @@ class Retail extends React.Component {
     }
 
     componentDidMount() {
+        this.loadData()
         this.solve()
     }
 
