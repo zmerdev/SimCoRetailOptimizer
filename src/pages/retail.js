@@ -1,6 +1,5 @@
 import functionPlot from 'function-plot';
 import React from 'react'
-import ReactSlider from 'react-slider';
 // @ts-ignore
 import nerdamer from "nerdamer/all.js";
 import NumericInput from 'react-numeric-input';
