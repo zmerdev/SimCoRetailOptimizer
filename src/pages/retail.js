@@ -29,7 +29,7 @@ class Retail extends React.Component {
             domainY2: 500,
             retailmodels: new Map([
                 ['Apples', '(Math.pow(price*3.192824 + (-7.661700 + (saturation - 0.5)/0.618222), 2.000000)*0.695800 + 20.495550)*amount'],
-                ['Coffee', '(Math.pow(price*13.502845 + (-431.872605 + (saturation - 0.5)/0.105230), 2.000000)*0.026234 + 23.376900)*amount'],
+                ['Coffee powder', '(Math.pow(price*13.502845 + (-431.872605 + (saturation - 0.5)/0.105230), 2.000000)*0.026234 + 23.376900)*amount'],
                 ['Eggs', '(Math.pow(price*5.021986 + (-5.988429 + (saturation - 0.5)/1.343650), 2.000000)*0.865137 + 6.610217)*amount'],
                 ['Grapes', '(Math.pow(price*6.596025 + (-20.525185 + (saturation - 0.5)/0.217054), 2.000000)*0.120636 + 28.630330)*amount'],
                 ['Oranges', '(Math.pow(price*5.998983 + (-15.076925 + (saturation - 0.5)/0.262152), 2.000000)*0.156630 + 24.727237)*amount'],
@@ -38,7 +38,7 @@ class Retail extends React.Component {
             ]),
             saturations: new Map([
                 ['Apples', '1.1199495989189976'],
-                ['Coffee', '3.0474785067910872'],
+                ['Coffee powder', '3.0474785067910872'],
                 ['Eggs', '0.8029803217635234'],
                 ['Grapes', '1.2232558511205256'],
                 ['Oranges', '1.1189683256723917'],
@@ -52,8 +52,7 @@ class Retail extends React.Component {
     }
 
     loadData = () => {
-        let satData = JSON.parse(JSON.stringify(saturationData));
-        satData = new Map(satData)
+        let satData =  new Map(Object.entries(saturationData))
         console.log(satData)
         this.setState({ saturations: satData }, () => { console.log(this.state) })
     }
@@ -129,25 +128,7 @@ class Retail extends React.Component {
         })
     }
 
-    getSaturation = () => {
-
-        let url = `https://www.simcompanies.com/api/v3/1/buildings/2/`;
-        let options = {
-            method: 'GET',
-            mode: 'no-cors'
-        }
-        try {
-            fetch(url, options)
-                .then((response) => {
-                    console.log(response)
-                    response.json()
-                })
-                .then((data) => console.log(data));
-        }
-        catch (ex) {
-            console.log(ex)
-        }
-    }
+    
 
     handleResourceChange = (event) => {
         this.setState({
@@ -168,7 +149,7 @@ class Retail extends React.Component {
                     <Form.Select onChange={this.handleResourceChange}>
                         <option>Select Resource</option>
                         <option value="Apples">Apples</option>
-                        <option value="Coffee">Coffee</option>
+                        <option value="Coffee powder">Coffee powder</option>
                         <option value="Eggs">Eggs</option>
                         <option value="Grapes">Grapes</option>
                         <option value="Oranges">Oranges</option>
@@ -184,7 +165,6 @@ class Retail extends React.Component {
                 <div>Labor <NumericInput step={1} value={this.state.laborCost} onChange={(event) => this.setState({ laborCost: event }, this.solve())} /></div>
                 <div>Best Sale Price: {this.state.maxI} PPHPL: {this.state.max}</div>
                 <Button onClick={this.loadData}>Reload Saturation Data</Button>
-                <Button onClick={this.getSaturation}>Load Saturations from API</Button>
             </div>
         )
     }
