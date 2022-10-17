@@ -164,7 +164,6 @@ class Retail extends React.Component {
                 <div>Admin <NumericInput step={0.01} precision={3} value={this.state.admin} onChange={(event) => this.setState({ admin: event }, this.solve())} /></div>
                 <div>Labor <NumericInput step={1} value={this.state.laborCost} onChange={(event) => this.setState({ laborCost: event }, this.solve())} /></div>
                 <div>Best Sale Price: {this.state.maxI} PPHPL: {this.state.max}</div>
-                <Button onClick={this.loadData}>Reload Saturation Data</Button>
             </div>
         )
     }
