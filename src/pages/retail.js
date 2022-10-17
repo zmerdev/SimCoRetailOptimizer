@@ -31,7 +31,7 @@ class Retail extends React.Component {
                 ['Eggs', '(Math.pow(price*5.021986 + (-5.988429 + (saturation - 0.5)/1.343650), 2.000000)*0.865137 + 6.610217)*amount'],
                 ['Grapes', '(Math.pow(price*6.596025 + (-20.525185 + (saturation - 0.5)/0.217054), 2.000000)*0.120636 + 28.630330)*amount'],
                 ['Oranges', '(Math.pow(price*5.998983 + (-15.076925 + (saturation - 0.5)/0.262152), 2.000000)*0.156630 + 24.727237)*amount'],
-                ['Sausage', '(Math.pow(price*0.374238 + (-3.753411 + (saturation - 0.5)/4.682714), 2.000000)*34.731853 + 21.572190)*amount'],
+                ['Sausages', '(Math.pow(price*0.374238 + (-3.753411 + (saturation - 0.5)/4.682714), 2.000000)*34.731853 + 21.572190)*amount'],
                 ['Steak', '(Math.pow(price*5.725281 + (-212.765637 + (saturation - 0.5)/0.097644), 2.000000)*0.050282 + 64.421295)*amount'],
             ]),
             saturations: new Map([
