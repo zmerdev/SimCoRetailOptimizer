@@ -153,7 +153,7 @@ class Retail extends React.Component {
                         <option value="Eggs">Eggs</option>
                         <option value="Grapes">Grapes</option>
                         <option value="Oranges">Oranges</option>
-                        <option value="Sausage">Sausage</option>
+                        <option value="Sausages">Sausages</option>
                         <option value="Steak">Steak</option>
                     </Form.Select>
                 </div>
