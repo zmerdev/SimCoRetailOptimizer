@@ -26,13 +26,13 @@ class Retail extends React.Component {
             domainY1: 0,
             domainY2: 500,
             retailmodels: new Map([
-                ['Apples', '(Math.pow(price*3.192824 + (-7.661700 + (saturation - 0.5)/0.618222), 2.000000)*0.695800 + 20.495550)*amount'],
-                ['Coffee powder', '(Math.pow(price*13.502845 + (-431.872605 + (saturation - 0.5)/0.105230), 2.000000)*0.026234 + 23.376900)*amount'],
-                ['Eggs', '(Math.pow(price*5.021986 + (-5.988429 + (saturation - 0.5)/1.343650), 2.000000)*0.865137 + 6.610217)*amount'],
-                ['Grapes', '(Math.pow(price*6.596025 + (-20.525185 + (saturation - 0.5)/0.217054), 2.000000)*0.120636 + 28.630330)*amount'],
-                ['Oranges', '(Math.pow(price*5.998983 + (-15.076925 + (saturation - 0.5)/0.262152), 2.000000)*0.156630 + 24.727237)*amount'],
-                ['Sausages', '(Math.pow(price*0.374238 + (-3.753411 + (saturation - 0.5)/4.682714), 2.000000)*34.731853 + 21.572190)*amount'],
-                ['Steak', '(Math.pow(price*5.725281 + (-212.765637 + (saturation - 0.5)/0.097644), 2.000000)*0.050282 + 64.421295)*amount'],
+                ['Apples', '(Math.pow(price*3.179206 + (-7.356975 + (saturation - 0.5)/0.599775), 2.000000)*0.678778 + 20.484356)*amount'],
+                ['Coffee powder', '(Math.pow(price*13.751570 + (-423.535513 + (saturation - 0.5)/0.113014), 2.000000)*0.027581 + 23.229650)*amount'],
+                ['Eggs', '(Math.pow(price*5.230146 + (-6.077741 + (saturation - 0.5)/1.269072), 2.000000)*0.786793 + 6.616450)*amount'],
+                ['Grapes', '(Math.pow(price*6.458955 + (-19.626893 + (saturation - 0.5)/0.222521), 2.000000)*0.124865 + 28.088719)*amount'],
+                ['Oranges', '(Math.pow(price*5.440812 + (-13.289307 + (saturation - 0.5)/0.322054), 2.000000)*0.182793 + 25.111029)*amount'],
+                ['Sausages', '(Math.pow(price*0.376938 + (-3.646306 + (saturation - 0.5)/4.855919), 2.000000)*38.148198 + 21.343798)*amount'],
+                ['Steak', '(Math.pow(price*6.128719 + (-222.432256 + (saturation - 0.5)/0.095397), 2.000000)*0.055572 + 64.124642)*amount']
             ]),
             saturations: new Map([
                 ['Apples', '1.1199495989189976'],
