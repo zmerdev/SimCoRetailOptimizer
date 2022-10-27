@@ -5,12 +5,15 @@ import nerdamer from "nerdamer/all.js";
 import NumericInput from 'react-numeric-input';
 import Form from 'react-bootstrap/Form'
 import saturationData from '../data/saturation.json';
+import retailData from '../data/retailModels.json';
+import { Button } from 'react-bootstrap';
 
 class Retail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             saturation: 1.1875107382766068,
+            adjustedSat: 1.1875107382766068,
             salesBonus: 4,
             admin: 0.04,
             laborCost: 138,
@@ -25,6 +28,7 @@ class Retail extends React.Component {
             domainX2: 3,
             domainY1: 0,
             domainY2: 500,
+            quality: 0,
             retailmodels: new Map([
                 ['Apples', '(Math.pow(price*3.179206 + (-7.356975 + (saturation - 0.5)/0.599775), 2.000000)*0.678778 + 20.484356)*amount'],
                 ['Coffee powder', '(Math.pow(price*13.751570 + (-423.535513 + (saturation - 0.5)/0.113014), 2.000000)*0.027581 + 23.229650)*amount'],
@@ -43,6 +47,7 @@ class Retail extends React.Component {
                 ['Sausage', '1.3736872260414887'],
                 ['Steak', '2.102062276069676'],
             ]),
+            values: new Array(),
             retailmodel: "",
             max: 0,
             maxI: 0
@@ -51,8 +56,9 @@ class Retail extends React.Component {
 
     loadData = () => {
         let satData =  new Map(Object.entries(saturationData))
-        console.log(satData)
-        this.setState({ saturations: satData }, () => { console.log(this.state) })
+        let retData =  new Map(Object.entries(retailData))
+        let values = [ ...satData.keys() ]
+        this.setState({ saturations: satData, retailmodels: retData, values: values }, ()=>{console.log(this.state.values)})
     }
 
     parseRetailModel = () => {
@@ -90,7 +96,7 @@ class Retail extends React.Component {
     }
 
     solve = () => {
-        let n1 = nerdamer(`(x-${this.state.materialCost})*((3600/((x * ${this.state.aa} + (-${this.state.bb} + (${this.state.saturation} - 0.5) / ${this.state.cc}))^2 * ${this.state.dd} + ${this.state.ee}))/(1-(${this.state.salesBonus}/100) ))-(${this.state.laborCost}*(1+${this.state.admin}))`);
+        let n1 = nerdamer(`(x-${this.state.materialCost})*((3600/((x * ${this.state.aa} + (-${this.state.bb} + (${Math.max(this.state.saturation-0.24*this.state.quality,-0.38)} - 0.5) / ${this.state.cc}))^2 * ${this.state.dd} + ${this.state.ee}))/(1-(${this.state.salesBonus}/100) ))-(${this.state.laborCost}*(1+${this.state.admin}))`);
         let sol = nerdamer.solve(n1, 'x')
 
         let max = -1;
@@ -98,9 +104,10 @@ class Retail extends React.Component {
 
         let low = sol.symbol.elements[0].valueOf()
         let high = sol.symbol.elements[1].valueOf()
-        console.log(new Date(Date.now()).toString())
+        let step = Math.pow(10,Math.floor(Math.log10((high - low)/100)))/2
+        console.log(low + ' ' + high +' '+ step + " " + this.state.quality+" " + this.state.laborCost +" " + this.state.price+" " + this.state.salesBonus)
 
-        for (let i = low; i < high; i += .01) {
+        for (let i = low; i < high; i += step) {
             let ans = n1.evaluate({ x: i })
             if (ans.valueOf() > max) {
                 max = ans.valueOf()
@@ -120,7 +127,7 @@ class Retail extends React.Component {
             xAxis: { domain: [this.state.domainX1, this.state.domainX2], label: "price" },
 
             data: [{
-                fn: `(x-${this.state.materialCost})*((3600/((x * ${this.state.aa} + (-${this.state.bb} + (${this.state.saturation} - 0.5) / ${this.state.cc}))^2 * ${this.state.dd} + ${this.state.ee}))/(1-(${this.state.salesBonus}/100) ))-(${this.state.laborCost}*(1+${this.state.admin}))`,
+                fn: `(x-${this.state.materialCost})*((3600/((x * ${this.state.aa} + (-${this.state.bb} + (${Math.max(this.state.saturation-.24*this.state.quality,-0.38)} - 0.5) / ${this.state.cc}))^2 * ${this.state.dd} + ${this.state.ee}))/(1-(${this.state.salesBonus}/100) ))-(${this.state.laborCost}*(1+${this.state.admin}))`,
                 nSamples: 700
             }]
         })
@@ -147,13 +154,9 @@ class Retail extends React.Component {
                 <div>
                     <Form.Select onChange={this.handleResourceChange}>
                         <option>Select Resource</option>
-                        <option value="Apples">Apples</option>
-                        <option value="Coffee powder">Coffee powder</option>
-                        <option value="Eggs">Eggs</option>
-                        <option value="Grapes">Grapes</option>
-                        <option value="Oranges">Oranges</option>
-                        <option value="Sausages">Sausages</option>
-                        <option value="Steak">Steak</option>
+                        {this.state.values.map((key,idx)=>{
+                            return(<option value={key}>{key}</option>)
+                        })}
                     </Form.Select>
                 </div>
                 <div>retail model <input value={this.state.retailmodel} /></div>
@@ -162,7 +165,9 @@ class Retail extends React.Component {
                 <div>Sales Bonus <NumericInput step={1} value={this.state.salesBonus} onChange={(event) => this.setState({ salesBonus: event }, this.solve())} /></div>
                 <div>Admin <NumericInput step={0.01} precision={3} value={this.state.admin} onChange={(event) => this.setState({ admin: event }, this.solve())} /></div>
                 <div>Labor <NumericInput step={1} value={this.state.laborCost} onChange={(event) => this.setState({ laborCost: event }, this.solve())} /></div>
+                <div>Quality <NumericInput step={1} value={this.state.quality} onChange={(event) => this.setState({ quality: event }, this.solve())} /></div>
                 <div>Best Sale Price: {this.state.maxI} PPHPL: {this.state.max}</div>
+                <Button onClick={() => {this.loadData(); this.solve();}}>Load Data</Button>
             </div>
         )
     }
