@@ -151,6 +151,7 @@ class Retail extends React.Component {
                 return this.state.normalRetailModels.get(value)
             case 'Boom':
                 return this.state.boomRetailModels.get(value)
+            default:
         }
     }
 
