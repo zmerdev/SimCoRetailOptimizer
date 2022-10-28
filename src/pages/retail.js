@@ -5,7 +5,9 @@ import nerdamer from "nerdamer/all.js";
 import NumericInput from 'react-numeric-input';
 import Form from 'react-bootstrap/Form'
 import saturationData from '../data/saturation.json';
-import retailData from '../data/retailModels.json';
+import recessionRetailData from '../data/retailModelsRecession.json';
+import boomRetailData from '../data/retailModelsBoom.json';
+import normalRetailData from '../data/retailModelsNormal.json';
 import { Button } from 'react-bootstrap';
 
 class Retail extends React.Component {
@@ -29,6 +31,7 @@ class Retail extends React.Component {
             domainY1: 0,
             domainY2: 500,
             quality: 0,
+            econPhase: 'Recession',
             retailmodels: new Map([
                 ['Apples', '(Math.pow(price*3.179206 + (-7.356975 + (saturation - 0.5)/0.599775), 2.000000)*0.678778 + 20.484356)*amount'],
                 ['Coffee powder', '(Math.pow(price*13.751570 + (-423.535513 + (saturation - 0.5)/0.113014), 2.000000)*0.027581 + 23.229650)*amount'],
@@ -47,7 +50,7 @@ class Retail extends React.Component {
                 ['Sausage', '1.3736872260414887'],
                 ['Steak', '2.102062276069676'],
             ]),
-            values: new Array(),
+            values: [],
             retailmodel: "",
             max: 0,
             maxI: 0
@@ -55,8 +58,22 @@ class Retail extends React.Component {
     }
 
     loadData = () => {
+        let retData = new Map();
         let satData =  new Map(Object.entries(saturationData))
-        let retData =  new Map(Object.entries(retailData))
+        switch (this.state.econPhase) {
+            case 'Recession':
+                retData =  new Map(Object.entries(recessionRetailData))
+                break;
+            case 'Normal':
+                retData =  new Map(Object.entries(normalRetailData))
+                break;
+            case 'Boom':
+                retData =  new Map(Object.entries(boomRetailData))
+                break;
+            default:
+                break;
+        }
+
         let values = [ ...satData.keys() ]
         this.setState({ saturations: satData, retailmodels: retData, values: values }, ()=>{console.log(this.state.values)})
     }
@@ -157,6 +174,14 @@ class Retail extends React.Component {
                         {this.state.values.map((key,idx)=>{
                             return(<option value={key}>{key}</option>)
                         })}
+                    </Form.Select>
+                </div>
+                <div>
+                    <Form.Select onChange={(event)=>{this.setState({econPhase:event})}}>
+                        <option value={'Recession'}>Select Econ Phase</option>
+                        <option value={'Recession'}>Recession</option>
+                        <option value={'Normal'}>Normal</option>
+                        <option value={'Boom'}>Boom</option>
                     </Form.Select>
                 </div>
                 <div>retail model <input value={this.state.retailmodel} /></div>
