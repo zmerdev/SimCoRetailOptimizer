@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/SimCoRetailOptimizer/static/css/main.7c315686.css",
-    "main.js": "/SimCoRetailOptimizer/static/js/main.9e71c3ae.js",
+    "main.css": "/SimCoRetailOptimizer/static/css/main.34f24e50.css",
+    "main.js": "/SimCoRetailOptimizer/static/js/main.f64d23df.js",
     "static/js/787.71fdf0b3.chunk.js": "/SimCoRetailOptimizer/static/js/787.71fdf0b3.chunk.js",
     "index.html": "/SimCoRetailOptimizer/index.html",
-    "main.7c315686.css.map": "/SimCoRetailOptimizer/static/css/main.7c315686.css.map",
-    "main.9e71c3ae.js.map": "/SimCoRetailOptimizer/static/js/main.9e71c3ae.js.map",
+    "main.34f24e50.css.map": "/SimCoRetailOptimizer/static/css/main.34f24e50.css.map",
+    "main.f64d23df.js.map": "/SimCoRetailOptimizer/static/js/main.f64d23df.js.map",
     "787.71fdf0b3.chunk.js.map": "/SimCoRetailOptimizer/static/js/787.71fdf0b3.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7c315686.css",
-    "static/js/main.9e71c3ae.js"
+    "static/css/main.34f24e50.css",
+    "static/js/main.f64d23df.js"
   ]
 }
