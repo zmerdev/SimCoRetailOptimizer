@@ -14,6 +14,7 @@ class Retail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            resource: "Apple",
             saturation: 1.1875107382766068,
             adjustedSat: 1.1875107382766068,
             salesBonus: 4,
@@ -32,15 +33,9 @@ class Retail extends React.Component {
             domainY2: 500,
             quality: 0,
             econPhase: 'Recession',
-            retailmodels: new Map([
-                ['Apples', '(Math.pow(price*3.179206 + (-7.356975 + (saturation - 0.5)/0.599775), 2.000000)*0.678778 + 20.484356)*amount'],
-                ['Coffee powder', '(Math.pow(price*13.751570 + (-423.535513 + (saturation - 0.5)/0.113014), 2.000000)*0.027581 + 23.229650)*amount'],
-                ['Eggs', '(Math.pow(price*5.230146 + (-6.077741 + (saturation - 0.5)/1.269072), 2.000000)*0.786793 + 6.616450)*amount'],
-                ['Grapes', '(Math.pow(price*6.458955 + (-19.626893 + (saturation - 0.5)/0.222521), 2.000000)*0.124865 + 28.088719)*amount'],
-                ['Oranges', '(Math.pow(price*5.440812 + (-13.289307 + (saturation - 0.5)/0.322054), 2.000000)*0.182793 + 25.111029)*amount'],
-                ['Sausages', '(Math.pow(price*0.376938 + (-3.646306 + (saturation - 0.5)/4.855919), 2.000000)*38.148198 + 21.343798)*amount'],
-                ['Steak', '(Math.pow(price*6.128719 + (-222.432256 + (saturation - 0.5)/0.095397), 2.000000)*0.055572 + 64.124642)*amount']
-            ]),
+            recessionRetailModels: new Map(),
+            normalRetailModels: new Map(),
+            boomRetailModels: new Map(),
             saturations: new Map([
                 ['Apples', '1.1199495989189976'],
                 ['Coffee powder', '3.0474785067910872'],
@@ -58,24 +53,14 @@ class Retail extends React.Component {
     }
 
     loadData = () => {
-        let retData = new Map();
-        let satData =  new Map(Object.entries(saturationData))
-        switch (this.state.econPhase) {
-            case 'Recession':
-                retData =  new Map(Object.entries(recessionRetailData))
-                break;
-            case 'Normal':
-                retData =  new Map(Object.entries(normalRetailData))
-                break;
-            case 'Boom':
-                retData =  new Map(Object.entries(boomRetailData))
-                break;
-            default:
-                break;
-        }
 
-        let values = [ ...satData.keys() ]
-        this.setState({ saturations: satData, retailmodels: retData, values: values }, ()=>{console.log(this.state.values)})
+        let satData = new Map(Object.entries(saturationData))
+        let recModels = new Map(Object.entries(recessionRetailData))
+        let normModels = new Map(Object.entries(normalRetailData))
+        let boomModels = new Map(Object.entries(boomRetailData))
+
+        let values = [...satData.keys()]
+        this.setState({ saturations: satData, recessionRetailModels: recModels, normalRetailModels: normModels, boomRetailModels: boomModels, values: values })
     }
 
     parseRetailModel = () => {
@@ -113,7 +98,7 @@ class Retail extends React.Component {
     }
 
     solve = () => {
-        let n1 = nerdamer(`(x-${this.state.materialCost})*((3600/((x * ${this.state.aa} + (-${this.state.bb} + (${Math.max(this.state.saturation-0.24*this.state.quality,-0.38)} - 0.5) / ${this.state.cc}))^2 * ${this.state.dd} + ${this.state.ee}))/(1-(${this.state.salesBonus}/100) ))-(${this.state.laborCost}*(1+${this.state.admin}))`);
+        let n1 = nerdamer(`(x-${this.state.materialCost})*((3600/((x * ${this.state.aa} + (-${this.state.bb} + (${Math.max(this.state.saturation - 0.24 * this.state.quality, -0.38)} - 0.5) / ${this.state.cc}))^2 * ${this.state.dd} + ${this.state.ee}))/(1-(${this.state.salesBonus}/100) ))-(${this.state.laborCost}*(1+${this.state.admin}))`);
         let sol = nerdamer.solve(n1, 'x')
 
         let max = -1;
@@ -121,8 +106,8 @@ class Retail extends React.Component {
 
         let low = sol.symbol.elements[0].valueOf()
         let high = sol.symbol.elements[1].valueOf()
-        let step = Math.pow(10,Math.floor(Math.log10((high - low)/100)))/2
-        console.log(low + ' ' + high +' '+ step + " " + this.state.quality+" " + this.state.laborCost +" " + this.state.price+" " + this.state.salesBonus)
+        let step = Math.pow(10, Math.floor(Math.log10((high - low) / 100))) / 2
+        console.log(low + ' ' + high + ' ' + step + " " + this.state.quality + " " + this.state.laborCost + " " + this.state.price + " " + this.state.salesBonus)
 
         for (let i = low; i < high; i += step) {
             let ans = n1.evaluate({ x: i })
@@ -144,19 +129,29 @@ class Retail extends React.Component {
             xAxis: { domain: [this.state.domainX1, this.state.domainX2], label: "price" },
 
             data: [{
-                fn: `(x-${this.state.materialCost})*((3600/((x * ${this.state.aa} + (-${this.state.bb} + (${Math.max(this.state.saturation-.24*this.state.quality,-0.38)} - 0.5) / ${this.state.cc}))^2 * ${this.state.dd} + ${this.state.ee}))/(1-(${this.state.salesBonus}/100) ))-(${this.state.laborCost}*(1+${this.state.admin}))`,
+                fn: `(x-${this.state.materialCost})*((3600/((x * ${this.state.aa} + (-${this.state.bb} + (${Math.max(this.state.saturation - .24 * this.state.quality, -0.38)} - 0.5) / ${this.state.cc}))^2 * ${this.state.dd} + ${this.state.ee}))/(1-(${this.state.salesBonus}/100) ))-(${this.state.laborCost}*(1+${this.state.admin}))`,
                 nSamples: 700
             }]
         })
     }
 
-    
-
-    handleResourceChange = (event) => {
+    updateModels = () => {
+        console.log(this.getRetailModel(this.state.resource))
         this.setState({
-            retailmodel: this.state.retailmodels.get(event.target.value)
-            , saturation: this.state.saturations.get(event.target.value)
+            retailmodel: this.getRetailModel(this.state.resource),
+            saturation: this.state.saturations.get(this.state.resource)
         }, this.parseRetailModel)
+    }
+
+    getRetailModel(value) {
+        switch (this.state.econPhase) {
+            case 'Recession':
+                return this.state.recessionRetailModels.get(value)
+            case 'Normal':
+                return this.state.normalRetailModels.get(value)
+            case 'Boom':
+                return this.state.boomRetailModels.get(value)
+        }
     }
 
     componentDidMount() {
@@ -169,16 +164,15 @@ class Retail extends React.Component {
             <div>
                 <div id='plot'></div>
                 <div>
-                    <Form.Select onChange={this.handleResourceChange}>
+                    <Form.Select onChange={(event) => { this.setState({ resource: event.target.value }, this.updateModels) }}>
                         <option>Select Resource</option>
-                        {this.state.values.map((key,idx)=>{
-                            return(<option value={key}>{key}</option>)
+                        {this.state.values.map((key, idx) => {
+                            return (<option value={key}>{key}</option>)
                         })}
                     </Form.Select>
                 </div>
                 <div>
-                    <Form.Select onChange={(event)=>{this.setState({econPhase:event})}}>
-                        <option value={'Recession'}>Select Econ Phase</option>
+                    <Form.Select onChange={(event) => { this.setState({ econPhase: event.target.value }, this.updateModels) }}>
                         <option value={'Recession'}>Recession</option>
                         <option value={'Normal'}>Normal</option>
                         <option value={'Boom'}>Boom</option>
@@ -192,7 +186,7 @@ class Retail extends React.Component {
                 <div>Labor <NumericInput step={1} value={this.state.laborCost} onChange={(event) => this.setState({ laborCost: event }, this.solve())} /></div>
                 <div>Quality <NumericInput step={1} value={this.state.quality} onChange={(event) => this.setState({ quality: event }, this.solve())} /></div>
                 <div>Best Sale Price: {this.state.maxI} PPHPL: {this.state.max}</div>
-                <Button onClick={() => {this.loadData(); this.solve();}}>Load Data</Button>
+                <Button onClick={() => { this.loadData(); this.solve(); }}>Load Data</Button>
             </div>
         )
     }
