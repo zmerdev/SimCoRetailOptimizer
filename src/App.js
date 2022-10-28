@@ -25,14 +25,14 @@ export default function App() {
             </SidebarMenu.Header>
             <SidebarMenu.Body>
               <SidebarMenu.Nav>
-                <SidebarMenu.Nav.Link href='/#/retail' >
+                <SidebarMenu.Nav.Link href='/SimCoRetailOptimizer/#/retail' >
                   <SidebarMenu.Nav.Title>
                     {"Retail"}
                   </SidebarMenu.Nav.Title>
                 </SidebarMenu.Nav.Link>
               </SidebarMenu.Nav>
               <SidebarMenu.Nav>
-                <SidebarMenu.Nav.Link href='/#/building-production'>
+                <SidebarMenu.Nav.Link href='/SimCoRetailOptimizer/#/building-production'>
                   <SidebarMenu.Nav.Title>
                     {"Buildings"}
                   </SidebarMenu.Nav.Title>
