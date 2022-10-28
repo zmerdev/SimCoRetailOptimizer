@@ -13,7 +13,7 @@ import {
 
 export default function App() {
   return (
-    <Router>
+    <Router basename='/SimCoRetailOptimizer' >
       <div className='main-wrapper main-wrapper-responsive-lg'>
         <SidebarMenu bg="dark" collapseOnSelect={false} defaultExpanded={true} exclusiveExpand={false} expand="lg" hide="md" variant="dark">
           <SidebarMenu.Collapse>
@@ -25,14 +25,14 @@ export default function App() {
             </SidebarMenu.Header>
             <SidebarMenu.Body>
               <SidebarMenu.Nav>
-                <SidebarMenu.Nav.Link href='/retail' >
+                <SidebarMenu.Nav.Link o href='/SimCoRetailOptimizer/retail' >
                   <SidebarMenu.Nav.Title>
                     {"Retail"}
                   </SidebarMenu.Nav.Title>
                 </SidebarMenu.Nav.Link>
               </SidebarMenu.Nav>
               <SidebarMenu.Nav>
-                <SidebarMenu.Nav.Link href='/building-production'>
+                <SidebarMenu.Nav.Link href='/SimCoRetailOptimizer/building-production'>
                   <SidebarMenu.Nav.Title>
                     {"Buildings"}
                   </SidebarMenu.Nav.Title>
