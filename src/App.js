@@ -1,6 +1,5 @@
 import './App.css';
 import Retail from './pages/retail';
-import SidebarMenu from 'react-bootstrap-sidebar-menu';
 import ProductionBuildingsNeeded from './pages/productionBuildingsNeeded';
 import Home from './pages/home';
 
