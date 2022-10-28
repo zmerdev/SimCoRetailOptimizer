@@ -6,14 +6,15 @@ import Home from './pages/home';
 
 import React from "react";
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route
 } from "react-router-dom";
 
 export default function App() {
   return (
-    <Router basename='/SimCoRetailOptimizer' >
+    <Router basename='/SimCoRetailOptimizer'>
+
       <div className='main-wrapper main-wrapper-responsive-lg'>
         <SidebarMenu bg="dark" collapseOnSelect={false} defaultExpanded={true} exclusiveExpand={false} expand="lg" hide="md" variant="dark">
           <SidebarMenu.Collapse>
@@ -42,14 +43,12 @@ export default function App() {
           </SidebarMenu.Collapse>
         </SidebarMenu>
 
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
         <Routes>
           <Route path="/retail" element={<Retail />} />
           <Route path="/buildings" element={<ProductionBuildingsNeeded />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </div>
-    </Router >
+    </Router>
   );
 }
