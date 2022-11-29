@@ -107,7 +107,7 @@ class Retail extends React.Component {
         let low = sol.symbol.elements[0].valueOf()
         let high = sol.symbol.elements[1].valueOf()
         let step = Math.pow(10, Math.floor(Math.log10((high - low) / 100))) / 2
-        console.log(low + ' ' + high + ' ' + step + " " + this.state.quality + " " + this.state.laborCost + " " + this.state.price + " " + this.state.salesBonus)
+        console.log(low + ' ' + high + ' ' + step + " " + this.state.quality + " " + this.state.laborCost + " " + this.state.salesBonus)
 
         for (let i = low; i < high; i += step) {
             let ans = n1.evaluate({ x: i })
