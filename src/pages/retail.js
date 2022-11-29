@@ -185,7 +185,7 @@ class Retail extends React.Component {
                 <div>Sales Bonus <NumericInput step={1} value={this.state.salesBonus} onChange={(event) => this.setState({ salesBonus: event }, this.solve())} /></div>
                 <div>Admin <NumericInput step={0.01} precision={3} value={this.state.admin} onChange={(event) => this.setState({ admin: event }, this.solve())} /></div>
                 <div>Labor <NumericInput step={1} value={this.state.laborCost} onChange={(event) => this.setState({ laborCost: event }, this.solve())} /></div>
-                <div>Quality <NumericInput step={1} value={this.state.quality} onChange={(event) => this.setState({ quality: event }, this.solve())} /></div>
+                <div>Quality <NumericInput step={0.1} value={this.state.quality} onChange={(event) => this.setState({ quality: event }, this.solve())} /></div>
                 <div>Best Sale Price: {this.state.maxI} PPHPL: {this.state.max}</div>
                 <Button onClick={() => { this.loadData(); this.solve(); }}>Load Data</Button>
             </div>
