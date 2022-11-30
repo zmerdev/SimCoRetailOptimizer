@@ -98,7 +98,7 @@ class Retail extends React.Component {
     }
 
     solve = () => {
-        let n1 = nerdamer(`(x-${this.state.materialCost})*((3600/((x * ${this.state.aa} + (-${this.state.bb} + (${Math.max(this.state.saturation - 0.24 * this.state.quality, -0.38)} - 0.5) / ${this.state.cc}))^2 * ${this.state.dd} + ${this.state.ee}))/(1-(${this.state.salesBonus}/100) ))-(${this.state.laborCost}*(1+${this.state.admin}))`);
+        let n1 = nerdamer(`(x-${this.state.materialCost})*((3600/((x * ${this.state.aa} + (-${this.state.bb} + (${Math.max( this.state.saturation < 0.3 ? this.state.saturation- 0.3 : this.state.saturation - 0.24 * this.state.quality, -0.38)} - 0.5) / ${this.state.cc}))^2 * ${this.state.dd} + ${this.state.ee}))/(1-(${this.state.salesBonus}/100) ))-(${this.state.laborCost}*(1+${this.state.admin}))`);
         let sol = nerdamer.solve(n1, 'x')
 
         let max = -1;
@@ -129,7 +129,7 @@ class Retail extends React.Component {
             xAxis: { domain: [this.state.domainX1, this.state.domainX2], label: "price" },
 
             data: [{
-                fn: `(x-${this.state.materialCost})*((3600/((x * ${this.state.aa} + (-${this.state.bb} + (${Math.max(this.state.saturation - .24 * this.state.quality, -0.38)} - 0.5) / ${this.state.cc}))^2 * ${this.state.dd} + ${this.state.ee}))/(1-(${this.state.salesBonus}/100) ))-(${this.state.laborCost}*(1+${this.state.admin}))`,
+                fn: `(x-${this.state.materialCost})*((3600/((x * ${this.state.aa} + (-${this.state.bb} + (${Math.max(this.state.saturation < 0.3 ? this.state.saturation- 0.3 : this.state.saturation - .24 * this.state.quality, -0.38)} - 0.5) / ${this.state.cc}))^2 * ${this.state.dd} + ${this.state.ee}))/(1-(${this.state.salesBonus}/100) ))-(${this.state.laborCost}*(1+${this.state.admin}))`,
                 nSamples: 700
             }]
         })
