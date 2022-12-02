@@ -14,6 +14,7 @@ class Retail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            updated: "never",
             resource: "Apple",
             saturation: 1.1875107382766068,
             adjustedSat: 1.1875107382766068,
@@ -58,9 +59,10 @@ class Retail extends React.Component {
         let recModels = new Map(Object.entries(recessionRetailData))
         let normModels = new Map(Object.entries(normalRetailData))
         let boomModels = new Map(Object.entries(boomRetailData))
-
+        let lastupdated = satData.get("LastUpdated")
+        satData.delete("LastUpdated")
         let values = [...satData.keys()]
-        this.setState({ saturations: satData, recessionRetailModels: recModels, normalRetailModels: normModels, boomRetailModels: boomModels, values: values })
+        this.setState({ updated: lastupdated, saturations: satData, recessionRetailModels: recModels, normalRetailModels: normModels, boomRetailModels: boomModels, values: values })
     }
 
     parseRetailModel = () => {
@@ -187,7 +189,11 @@ class Retail extends React.Component {
                 <div>Labor <NumericInput step={1} value={this.state.laborCost} onChange={(event) => this.setState({ laborCost: event }, this.solve())} /></div>
                 <div>Quality <NumericInput step={0.1} value={this.state.quality} onChange={(event) => this.setState({ quality: event }, this.solve())} /></div>
                 <div>Best Sale Price: {this.state.maxI} PPHPL: {this.state.max}</div>
+                <br></br>
                 <Button onClick={() => { this.loadData(); this.solve(); }}>Load Data</Button>
+                <br></br>
+                <br></br>
+                <div>Last Updated: {this.state.updated}</div>
             </div>
         )
     }
