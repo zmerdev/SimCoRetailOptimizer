@@ -74,7 +74,7 @@ class Retail extends React.Component {
         let r1normModels = new Map(Object.entries(r1normalRetailData))
         let r1boomModels = new Map(Object.entries(r1boomRetailData))
 
-        if(this.state.realm == '1'){
+        if(this.state.realm === '1'){
             let lastupdated = r1satData.get("LastUpdated")
             r1satData.delete("LastUpdated")
             let values = [...r1satData.keys()]
@@ -175,7 +175,7 @@ class Retail extends React.Component {
     }
 
     getRetailModel(value) {
-        if(this.state.realm == '1'){
+        if(this.state.realm === '1'){
             switch (this.state.econPhase) {
                 case 'Recession':
                     return this.state.r1recessionRetailModels.get(value)
