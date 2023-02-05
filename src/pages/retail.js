@@ -5,15 +5,19 @@ import nerdamer from "nerdamer/all.js";
 import NumericInput from 'react-numeric-input';
 import Form from 'react-bootstrap/Form'
 import saturationData from '../data/saturation.json';
-import recessionRetailData from '../data/retailModelsRecession.json';
-import boomRetailData from '../data/retailModelsBoom.json';
-import normalRetailData from '../data/retailModelsNormal.json';
+import r2recessionRetailData from '../data/r2retailModelsRecession.json';
+import r2boomRetailData from '../data/r2retailModelsBoom.json';
+import r2normalRetailData from '../data/r2retailModelsNormal.json';
+import r1recessionRetailData from '../data/r1retailModelsRecession.json';
+import r1boomRetailData from '../data/r1retailModelsBoom.json';
+import r1normalRetailData from '../data/r1retailModelsNormal.json';
 import { Button } from 'react-bootstrap';
 
 class Retail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            realm: "2",
             updated: "never",
             resource: "Apple",
             saturation: 1.1875107382766068,
@@ -34,9 +38,12 @@ class Retail extends React.Component {
             domainY2: 500,
             quality: 0,
             econPhase: 'Recession',
-            recessionRetailModels: new Map(),
-            normalRetailModels: new Map(),
-            boomRetailModels: new Map(),
+            r2recessionRetailModels: new Map(),
+            r2normalRetailModels: new Map(),
+            r2boomRetailModels: new Map(),
+            r1recessionRetailModels: new Map(),
+            r1normalRetailModels: new Map(),
+            r1boomRetailModels: new Map(),
             saturations: new Map([
                 ['Apples', '1.1199495989189976'],
                 ['Coffee powder', '3.0474785067910872'],
@@ -55,14 +62,34 @@ class Retail extends React.Component {
 
     loadData = () => {
 
-        let satData = new Map(Object.entries(saturationData))
-        let recModels = new Map(Object.entries(recessionRetailData))
-        let normModels = new Map(Object.entries(normalRetailData))
-        let boomModels = new Map(Object.entries(boomRetailData))
-        let lastupdated = satData.get("LastUpdated")
-        satData.delete("LastUpdated")
-        let values = [...satData.keys()]
-        this.setState({ updated: lastupdated, saturations: satData, recessionRetailModels: recModels, normalRetailModels: normModels, boomRetailModels: boomModels, values: values })
+        let r1satData = new Map(Object.entries(r1saturationData))
+        let r2satData = new Map(Object.entries(r2saturationData))
+        let r2recModels = new Map(Object.entries(r2recessionRetailData))
+        let r2normModels = new Map(Object.entries(r2normalRetailData))
+        let r2boomModels = new Map(Object.entries(r2boomRetailData))
+        let r1recModels = new Map(Object.entries(r1recessionRetailData))
+        let r1normModels = new Map(Object.entries(r1normalRetailData))
+        let r1boomModels = new Map(Object.entries(r1boomRetailData))
+
+        if(this.state.realm == '1'){
+            let lastupdated = r1satData.get("LastUpdated")
+            r1satData.delete("LastUpdated")
+            let values = [...r1satData.keys()]
+            this.setState({ updated: lastupdated, saturations: r1satData, 
+                r2recessionRetailModels: r2recModels, r2normalRetailModels: r2normModels, r2boomRetailModels: r2boomModels,
+                r1recessionRetailModels: r1recModels, r1normalRetailModels: r1normModels, r1boomRetailModels: r1boomModels,
+                values: values })
+        }
+        else{
+            let lastupdated = r2satData.get("LastUpdated")
+            r2satData.delete("LastUpdated")
+            let values = [...r2satData.keys()]
+            this.setState({ updated: lastupdated, saturations: r2satData, 
+                r2recessionRetailModels: r2recModels, r2normalRetailModels: r2normModels, r2boomRetailModels: r2boomModels,
+                r1recessionRetailModels: r1recModels, r1normalRetailModels: r1normModels, r1boomRetailModels: r1boomModels,
+                values: values })
+        }
+        
     }
 
     parseRetailModel = () => {
@@ -146,15 +173,28 @@ class Retail extends React.Component {
     }
 
     getRetailModel(value) {
-        switch (this.state.econPhase) {
-            case 'Recession':
-                return this.state.recessionRetailModels.get(value)
-            case 'Normal':
-                return this.state.normalRetailModels.get(value)
-            case 'Boom':
-                return this.state.boomRetailModels.get(value)
-            default:
+        if(this.state.realm == '1'){
+            switch (this.state.econPhase) {
+                case 'Recession':
+                    return this.state.r1recessionRetailModels.get(value)
+                case 'Normal':
+                    return this.state.r1normalRetailModels.get(value)
+                case 'Boom':
+                    return this.state.r1boomRetailModels.get(value)
+                default:
+            }
         }
+        else{
+            switch (this.state.econPhase) {
+                case 'Recession':
+                    return this.state.r2recessionRetailModels.get(value)
+                case 'Normal':
+                    return this.state.r2normalRetailModels.get(value)
+                case 'Boom':
+                    return this.state.r2boomRetailModels.get(value)
+                default:
+            }
+        }        
     }
 
     componentDidMount() {
@@ -166,6 +206,12 @@ class Retail extends React.Component {
         return (
             <div>
                 <div id='plot'></div>
+                <div>
+                    <Form.Select onChange={(event) => { this.setState({ realm: event.target.value }, this.loadData) }}>
+                        <option value={'1'}>Realm 1</option>
+                        <option value={'2'}>Realm 2</option>
+                    </Form.Select>
+                </div>
                 <div>
                     <Form.Select onChange={(event) => { this.setState({ resource: event.target.value }, this.updateModels) }}>
                         <option>Select Resource</option>
