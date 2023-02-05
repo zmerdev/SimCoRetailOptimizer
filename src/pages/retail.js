@@ -60,6 +60,8 @@ class Retail extends React.Component {
             maxI: 0
         };
     }
+    
+
 
     loadData = () => {
 
@@ -90,7 +92,6 @@ class Retail extends React.Component {
                 r1recessionRetailModels: r1recModels, r1normalRetailModels: r1normModels, r1boomRetailModels: r1boomModels,
                 values: values })
         }
-        
     }
 
     parseRetailModel = () => {
@@ -198,6 +199,14 @@ class Retail extends React.Component {
         }        
     }
 
+    realmSelected = () => {
+        this.setState({resource: "Apple"},
+            () => {
+                this.loadData(); 
+                this.updateModels();
+            })
+    }
+
     componentDidMount() {
         this.loadData()
         this.solve()
@@ -208,7 +217,7 @@ class Retail extends React.Component {
             <div>
                 <div id='plot'></div>
                 <div>
-                    <Form.Select onChange={(event) => { this.setState({ realm: event.target.value }, this.loadData) }}>
+                    <Form.Select onChange={(event) => { this.setState({ realm: event.target.value }, this.realmSelected) }}>
                         <option value={'1'}>Realm 1</option>
                         <option value={'2'}>Realm 2</option>
                     </Form.Select>
