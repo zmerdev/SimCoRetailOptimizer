@@ -4,7 +4,8 @@ import React from 'react'
 import nerdamer from "nerdamer/all.js";
 import NumericInput from 'react-numeric-input';
 import Form from 'react-bootstrap/Form'
-import saturationData from '../data/saturation.json';
+import r1saturationData from '../data/r1saturation.json';
+import r2saturationData from '../data/r2saturation.json';
 import r2recessionRetailData from '../data/r2retailModelsRecession.json';
 import r2boomRetailData from '../data/r2retailModelsBoom.json';
 import r2normalRetailData from '../data/r2retailModelsNormal.json';
